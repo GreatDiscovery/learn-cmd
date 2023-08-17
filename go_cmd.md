@@ -1,0 +1,9 @@
+### go项目用到的命令
+
+| 作用            | 命名                                        | 备注                           |
+|---------------|-------------------------------------------|------------------------------|
+| go查看某个版本依赖    | go mod why -m golang.org/x/net            |                              |
+| go查看某个依赖的所有版本 | go list -m -versions github.com/gin-gonic |                              |
+| 打印依赖图         | go mod graph                              | /Users/jiayun/go/bin/gmchart |    |
+|               |                                           |                              |
+|               |                                           |                              |
