@@ -4,11 +4,12 @@
 |---------------------------------------------------------|--------------------|--------------------------------------------------------------------|
 | unlink和del都是删除key，但是unlink不阻塞，对于超过10000的大key，优先使用unlink | unlink key         | https://segmentfault.com/a/1190000041352023                        |
 | 查看redis key位于哪个slot，位于哪个node的脚本                         | cluster keyslot $1 | [代码](#code1) :任意指定一个key获取该key所处在哪个node节点_weixin_33890499的博客-CSDN博客 |
-|                                                         |                    |                                                                    |
-|                                                         |                    |                                                                    |
+| 扫描未设置ttl的key的脚本                                         | scan扫描后处理          | [code2](#code2)                                                    |
+| 扫描某个key的个数                                              | scan扫描后处理          | scan.py                                                            |
 |                                                         |                    |                                                                    |
 
 #### code1
+
 ```shell
 #获取指定的key在哪个slot上，该key可以是存在的或者不存在的均可。
 key_slot=`redis-cli -h 5.5.5.101 -p 29001 -a abc123 -c cluster keyslot $1`
@@ -39,4 +40,44 @@ do
     fi
 done
 
+```
+
+#### code2
+
+```shell
+#!/bin/bash
+
+db_ip=10.212.130.209
+db_port=6379
+cursor=0
+cnt=100
+new_cursor=0
+
+redis-cli -h $db_ip -p $db_port -c scan $cursor count $cnt > scan_tmp_result
+new_cursor=`sed -n '1p' scan_tmp_result`
+sed -n '2,$p' scan_tmp_result > scan_result
+cat scan_result |while read line
+do
+    ttl_result=`redis-cli -h $db_ip -p $db_port  ttl $line`
+    if [[ $ttl_result == -1 ]];then
+        echo $line >> no_ttl.log
+    fi
+done
+
+
+while [ $cursor -ne $new_cursor ]
+do
+    redis-cli -h $db_ip -p $db_port -c scan $new_cursor count $cnt > scan_tmp_result
+    new_cursor=`sed -n '1p' scan_tmp_result`
+    sed -n '2,$p' scan_tmp_result > scan_result
+    cat scan_result |while read line
+    do
+        ttl_result=`redis-cli -h $db_ip -p $db_port -c ttl $line`
+        if [[ $ttl_result == -1 ]];then
+            echo $line >> no_ttl.log
+        fi
+    done
+done
+rm -rf scan_tmp_result
+rm -rf scan_result
 ```
