@@ -6,7 +6,7 @@
 | 查看redis key位于哪个slot，位于哪个node的脚本                         | cluster keyslot $1 | [代码](#code1) :任意指定一个key获取该key所处在哪个node节点_weixin_33890499的博客-CSDN博客 |
 | 扫描未设置ttl的key的脚本                                         | scan扫描后处理          | [code2](#code2)                                                    |
 | 扫描某个key的个数                                              | scan扫描后处理          | scan.py                                                            |
-|                                                         |                    |                                                                    |
+| 查看总共有多少个key                                             | dbsize             |                                                                    |
 
 #### code1
 
