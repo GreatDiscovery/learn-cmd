@@ -7,6 +7,8 @@
 | 扫描未设置ttl的key的脚本                                         | scan扫描后处理          | [code2](#code2)                                                    |
 | 扫描某个key的个数                                              | scan扫描后处理          | scan.py                                                            |
 | 查看总共有多少个key                                             | dbsize             |                                                                    |
+| 查看客户端来源ip                                               | monitor            | 会打印ip/命令                                                           |
+| 查看客户端ip                                                 | CLIENT LIST        | 这个只能看到slave和kubeproxy的ip                                           |
 
 #### code1
 
