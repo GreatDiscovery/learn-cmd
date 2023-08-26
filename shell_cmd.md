@@ -12,6 +12,7 @@
 | grep按照单词匹配                                                                              | grep -w 1.1.1.1                                                                                         |                                                           |
 | shell脚本中中允许使用别名                                                                         | source ~/.bashrc;shopt -s expand_aliases                                                                | [参考](https://cloud.tencent.com/developer/article/1862172) |
 | 清空一个文件                                                                                  | truncate -s 0 15.rdb                                                                                    |                                                           |
+| 安装网络工具ifconfig/ip/ping                                                                  | apt-get install net-tools;apt-get install iputils-ping;apt-get install iproute2                         |                                                           |
 
 #### code1
 
