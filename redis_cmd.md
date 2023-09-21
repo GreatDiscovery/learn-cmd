@@ -1,15 +1,16 @@
 ### redis运维命令
 
-| 作用                                                      | 命令                                            | 备注                                                                 |
-|---------------------------------------------------------|-----------------------------------------------|--------------------------------------------------------------------|
-| unlink和del都是删除key，但是unlink不阻塞，对于超过10000的大key，优先使用unlink | unlink key                                    | https://segmentfault.com/a/1190000041352023                        |
-| 查看redis key位于哪个slot，位于哪个node的脚本                         | cluster keyslot $1                            | [代码](#code1) :任意指定一个key获取该key所处在哪个node节点_weixin_33890499的博客-CSDN博客 |
-| 扫描未设置ttl的key的脚本                                         | scan扫描后处理                                     | [code2](#code2)                                                    |
-| 扫描某个key的个数                                              | scan扫描后处理                                     | scan.py                                                            |
-| 查看总共有多少个key                                             | dbsize                                        |                                                                    |
-| 查看客户端来源ip                                               | monitor                                       | 会打印ip/命令                                                           |
-| 查看客户端ip                                                 | CLIENT LIST                                   | 这个只能看到slave和kubeproxy的ip                                           |
-| (测试环境)批量删除key                                           | redis-cli keys "user*" \| xargs redis-cli del |                                                                    |
+| 作用                                                      | 命令                                                                                                                                | 备注                                                                 |
+|---------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------|
+| unlink和del都是删除key，但是unlink不阻塞，对于超过10000的大key，优先使用unlink | unlink key                                                                                                                        | https://segmentfault.com/a/1190000041352023                        |
+| 查看redis key位于哪个slot，位于哪个node的脚本                         | cluster keyslot $1                                                                                                                | [代码](#code1) :任意指定一个key获取该key所处在哪个node节点_weixin_33890499的博客-CSDN博客 |
+| 扫描未设置ttl的key的脚本                                         | scan扫描后处理                                                                                                                         | [code2](#code2)                                                    |
+| 扫描某个key的个数                                              | scan扫描后处理                                                                                                                         | scan.py                                                            |
+| 查看总共有多少个key                                             | dbsize                                                                                                                            |                                                                    |
+| 查看客户端来源ip                                               | monitor                                                                                                                           | 会打印ip/命令                                                           |
+| 查看客户端ip                                                 | CLIENT LIST                                                                                                                       | 这个只能看到slave和kubeproxy的ip                                           |
+| (测试环境)批量删除key                                           | redis-cli keys "user*" \| xargs redis-cli del                                                                                     |                                                                    |
+| 查看某个key占用多少内存                                           | redis-memory-for-key   -s 10.90.104.168  -p 6379 corr_cache_v5.q= / debug object corr_cache_v5.q= / memory usage corr_cache_v5.q= |                                                                    |
 
 #### code1
 
