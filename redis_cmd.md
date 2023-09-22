@@ -11,6 +11,7 @@
 | 查看客户端ip                                                 | CLIENT LIST                                                                                                                       | 这个只能看到slave和kubeproxy的ip                                           |
 | (测试环境)批量删除key                                           | redis-cli keys "user*" \| xargs redis-cli del                                                                                     |                                                                    |
 | 查看某个key占用多少内存                                           | redis-memory-for-key   -s 10.90.104.168  -p 6379 corr_cache_v5.q= / debug object corr_cache_v5.q= / memory usage corr_cache_v5.q= |                                                                    |
+| 查看某类key占用多少内存                                           | rdb -c memory ./1.rdb > redis_memory_report.csv                                                                                   | https://segmentfault.com/q/1010000010575235                        |
 
 #### code1
 
