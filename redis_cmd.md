@@ -13,6 +13,7 @@
 | 查看某个key占用多少内存                                           | redis-memory-for-key   -s 10.90.104.168  -p 6379 corr_cache_v5.q= / debug object corr_cache_v5.q= / memory usage corr_cache_v5.q=                                           |                                                                    |
 | 查看某类key占用多少内存                                           | rdb -c memory ./1.rdb > redis_memory_report.csv                                                                                                                             | https://segmentfault.com/q/1010000010575235                        |
 | 设置redis参数                                               | for ip in `redis-cli -h 10.146.206.239 cluster nodes  \| awk '{print $2}' \| awk -F":" '{print $1}'`; do redis-cli -h $ip config set cluster-slave-validity-factor 0 ; done |                                                                    |
+| 如何查看热key                                                | 1. redis-cli --hotkeys 2. redis-faina                                                                                                                                       | [code3](#code3)                                                    |
 
 #### code1
 
@@ -87,3 +88,14 @@ done
 rm -rf scan_tmp_result
 rm -rf scan_result
 ```
+
+#### code3
+1. redis-cli hotkeys 
+2. 如何使用redis-faina？
+   下载redis-faina代码，redis-cli -p 6490 MONITOR | head -n <NUMBER OF LINES TO ANALYZE> | ./redis-faina.py [options]，进行分析
+3. 使用延迟检测，查看redis延迟
+   latency monitoring: [网址](https://redis.io/docs/management/optimization/latency-monitor/)
+   CONFIG SET latency-monitor-threshold 100
+   CONFIG SET latency-monitor-threshold 0 // turn off
+   LATENCY LATEST - returns the latest latency samples for all events.
+   LATENCY DOCTOR - replies with a human-readable latency analysis report.
