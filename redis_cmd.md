@@ -15,6 +15,7 @@
 | 设置redis参数                                               | for ip in `redis-cli -h 10.146.206.239 cluster nodes  \| awk '{print $2}' \| awk -F":" '{print $1}'`; do redis-cli -h $ip config set cluster-slave-validity-factor 0 ; done |                                                                    |
 | 如何查看热key                                                | 1. redis-cli --hotkeys 2. redis-faina                                                                                                                                       | [code3](#code3)                                                    |
 | 查看客户端ip列表                                               | client list                                                                                                                                                                 |                                                                    |
+| redis-cli常用的用法，一些非常实用的功能                                | 1. 插入数据 2. 连续执行命令 3. monitor 4. 连续执行相同命令 5. 连续统计redis信息--stat 6. --bigkeys大key扫描 7. 监视redis的延迟  8. slave模式，可以接收来自master的命令                                                  | [地址](#https://redis.com.cn/topics/rediscli.html)                   |
 
 #### code1
 
@@ -91,9 +92,11 @@ rm -rf scan_result
 ```
 
 #### code3
-1. redis-cli hotkeys 
+
+1. redis-cli hotkeys
 2. 如何使用redis-faina？
-   下载redis-faina代码，redis-cli -p 6490 MONITOR | head -n <NUMBER OF LINES TO ANALYZE> | ./redis-faina.py [options]，进行分析
+   下载redis-faina代码，redis-cli -p 6490 MONITOR | head -n <NUMBER OF LINES TO ANALYZE> | ./redis-faina.py [options]
+   ，进行分析
 3. 使用延迟检测，查看redis延迟
    latency monitoring: [网址](https://redis.io/docs/management/optimization/latency-monitor/)
    CONFIG SET latency-monitor-threshold 100
