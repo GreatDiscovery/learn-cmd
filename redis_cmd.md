@@ -16,6 +16,7 @@
 | 如何查看热key                                                | 1. redis-cli --hotkeys 2. redis-faina                                                                                                                                       | [code3](#code3)                                                    |
 | 查看客户端ip列表                                               | client list                                                                                                                                                                 |                                                                    |
 | redis-cli常用的用法，一些非常实用的功能                                | 1. 插入数据 2. 连续执行命令 3. monitor 4. 连续执行相同命令 5. 连续统计redis信息--stat 6. --bigkeys大key扫描 7. 监视redis的延迟  8. slave模式，可以接收来自master的命令                                                  | [[地址](https://redis.com.cn/topics/rediscli.html)]                  |
+| 对每一个pod进行操作                                             |                                                                                                                                                                             | [code4](#code4)                                                    |
 
 #### code1
 
@@ -103,3 +104,9 @@ rm -rf scan_result
    CONFIG SET latency-monitor-threshold 0 // turn off
    LATENCY LATEST - returns the latest latency samples for all events.
    LATENCY DOCTOR - replies with a human-readable latency analysis report.
+
+#### code4
+
+```shell
+kubectl get pod -l label_cluster=k8redis-xxx -o wide |  awk 'NR>1{print $6}' | xargs -n 1 -I {} redis-cli -h {} config set cluster-node-timeout 30000 &
+```
