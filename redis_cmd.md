@@ -108,5 +108,6 @@ rm -rf scan_result
 #### code4
 
 ```shell
+# 先读取所有pod | awk提取某一列信息，这里的NR是行号 | xargs输入参数，-n表示每次输入一个, -I 表示需要替换的字符串， 也就是从标准输入里读取一个参数，替换大括号里的内容
 kubectl get pod -l label_cluster=k8redis-xxx -o wide |  awk 'NR>1{print $6}' | xargs -n 1 -I {} redis-cli -h {} config set cluster-node-timeout 30000 &
 ```
