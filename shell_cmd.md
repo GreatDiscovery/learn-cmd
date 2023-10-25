@@ -18,6 +18,7 @@
 | iptables命令                                                                              | iptables -vnL --line，只查看filter表的chain                                                                        | [防火墙原理，朱双印老哥的文档非常清理](https://www.zsythink.net/archives/1199) , [iptables使用](https://wangchujiang.com/linux-command/c/iptables.html) |
 | 监控查不出来的，可以看下syslog，或者journalctl -u查系统日志，实在不行，可以看一些机器上的监控组件的采集日志                         | journalctl -u xxx或者dmesg -T                                                                                  |                                                                                                                                     |
 | 在一个文件以root用户也无法删除时，需要改变文件的i属性                                                           | lsattr -a ~/.ssh/authorized_keys、chattr -i ~/.ssh/authorized_keys                                            |                                                                                                                                     |
+| grep 或查询，使用正则表达式                                                                        | grep -E 'pattern1\|pattern2' filename                                                                        |                                                                                                                                     |
 
 #### code1
 
