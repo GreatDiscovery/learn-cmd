@@ -9,6 +9,7 @@
 | 查看pod api资源      | kubectl api-resources                                                                    |                                                         |
 | 解析kubeconfig证书内容 | [参考](#k8s1)                                                                              | 查看k8s用户具有哪些权限 https://blog.51cto.com/u_15287666/5805955 |
 | 从k8s从拷贝文件        | kubectl cp <namespace>/<pod_name>:<container_path> <local_path>                          | 注意不要加前缀 /                                               |
+| 一批pod执行某个命令      | file(k8s2.sh)                                                                            |                                                         |
 
 ### etcd命令
 
