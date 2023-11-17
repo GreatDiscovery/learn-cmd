@@ -17,6 +17,7 @@
 | 查看客户端ip列表                                               | client list                                                                                                                                                                 |                                                                    |
 | redis-cli常用的用法，一些非常实用的功能                                | 1. 插入数据 2. 连续执行命令 3. monitor 4. 连续执行相同命令 5. 连续统计redis信息--stat 6. --bigkeys大key扫描 7. 监视redis的延迟  8. slave模式，可以接收来自master的命令                                                  | [[地址](https://redis.com.cn/topics/rediscli.html)]                  |
 | 对每一个pod进行操作                                             |                                                                                                                                                                             | [code4](#code4)                                                    |
+| redis把一个节点加入到集群里                                        | sredo_flushall;cluster reset;cluster meet 10.91.26.214 ip port;cluster replicate c89f00bdf0b01b45067f6cb2f3ffb86ee5fc4eee;                                                  |                                                                    |
 
 #### code1
 
