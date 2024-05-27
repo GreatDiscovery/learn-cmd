@@ -21,6 +21,7 @@
 | client-output-buffer-limit作用                            | client-output-buffer-limit normal 0 0 0;client-output-buffer-limit slave 256mb 64mb 60;client-output-buffer-limit pubsub 8mb 2mb 60                                         | 对于普通客户端来说，限制为0，也就是不限制。因为普通客户端通常采用阻塞式的消息应答模式，何谓阻塞式呢？如：发送请求，等待返回，再发送请求，再等待返回。这种模式下，通常不会导致Redis服务器输出缓冲区的堆积膨胀；对于slave客户端来说，大小限制是256M，持续性限制是当客户端缓冲区大小持续60秒超过64M，则关闭客户端连接。 |
 | 集群模式下如何执行集群管理相关的命令                                      | redis-cli --cluster help，比如常见的forget一个节点redis-cli  --cluster call 192.168.8.101:6381   cluster  forget  <xxx_node_id>                                                       | [集群故障恢复思路](#https://blog.itpub.net/30393770/viewspace-2886078/)                                                                                                      |
 | 如何使用redis-trib.rb脚本                                     | 改命令本质上还是封装了redis-cli的管理集群的命令，包括创建集群、修复集群、检查集群、迁移slot等                                                                                                                       | [网址](#https://developer.aliyun.com/article/574044)                                                                                                                   |
+| 如何查找ttl最大的key                                           | redis-cli EVAL "$(cat find_longest_ttl_with_scan.lua)" 0                                                                                                                    | [code5](#code5)                                                                                                                                                      |
 
 #### code1
 
@@ -114,4 +115,29 @@ rm -rf scan_result
 ```shell
 # 先读取所有pod | awk提取某一列信息，这里的NR是行号 | xargs输入参数，-n表示每次输入一个, -I 表示需要替换的字符串， 也就是从标准输入里读取一个参数，替换大括号里的内容
 kubectl get pod -l label_cluster=k8redis-xxx -o wide |  awk 'NR>1{print $6}' | xargs -n 1 -I {} redis-cli -h {} config set cluster-node-timeout 30000 &
+```
+
+#### code5
+
+```lua
+local cursor = '0'
+local longest_ttl_key = nil
+local longest_ttl = -1
+
+repeat
+    local result = redis.call('SCAN', cursor)
+    cursor = result[1]
+    local keys = result[2]
+
+    for i, key in ipairs(keys) do
+        local ttl = redis.call('TTL', key)
+        if ttl > longest_ttl then
+            longest_ttl = ttl
+            longest_ttl_key = key
+        end
+    end
+until cursor == '0'
+
+return {longest_ttl_key, longest_ttl}
+
 ```
