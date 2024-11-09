@@ -38,6 +38,7 @@
 | 查看线程名称                                                                                  | ps -T -p 10 \| htop命令，设置了线程名称的可以看到线程名称，没有设置线程名称的只能看到主进程的名称                                                                                                                                        |                                                                                                                                                                                        |
 | 内核模块加载                                                                                  | modprobe uio_pci_generic，lsmod查看加载的内核模块                                                                                                                                                           |                                                                                                                                                                                        |
 | 查看大二进制文件命令                                                                              | 拿到关键key在文件的位置：grep -a -b "string:comment_liked_truth_count:v1:671b1a4f000000001b02316d" largefile.bin;从指定位置读取二进制文件信息：hexdump -C -s $((1993361269)) -n 10240000 9403029587_2952611069.rdb > 1.txt  |                                                                                                                                                                                        |
+| 使用火焰图                                                                                   | 采集数据然后绘制火焰图                                                                                                                                                                                       | [参考](#code3)                                                                                                                                                                           |
 
 #### code1
 
@@ -70,4 +71,22 @@ $ ip link set dev veth_dustin up
 $ ip link set dev veth_ns_dustin netns netns_dustin
 $ ip netns exec netns_dustin ip link set dev veth_ns_dustin up
 $ ip netns exec netns_dustin ip address add 10.0.0.11/24 dev veth_ns_dustin
+```
+
+#### code3
+
+```shell
+uname -r
+apt-cache search linux-tools | grep '5.4.0-72'
+apt-get install linux-tools-5.4.0-72-generic
+
+#数据收集及预处理（server侧）
+/usr/lib/linux-tools/5.4.0-72-generic/perf record -F 49 -p ${PID} -g -e cpu-clock --call-graph dwarf -o perf.data -- sleep 30
+/usr/lib/linux-tools/5.4.0-72-generic/perf script -i perf.data &> perf.unfold
+
+#数据处理（server侧或本地均可）
+使用https://github.com/brendangregg/FlameGraph
+./stackcollapse-perf.pl perf.unfold &> perf.folded
+./flamegraph.pl perf.folded > xxx.svg
+
 ```
